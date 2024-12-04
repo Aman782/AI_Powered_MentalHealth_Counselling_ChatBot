@@ -1,0 +1,19 @@
+.navbar{
+    display: flex;
+    background-color:aliceblue;
+}
+
+.navbar ul{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+ul a{
+    margin: 0px 1.65rem;
+    text-decoration: none;
+    color: black;
+}
+
+.auth{
+    margin: 0px 1.5rem;
+}
