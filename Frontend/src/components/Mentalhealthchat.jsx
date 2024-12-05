@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 const Mentalhealthchat = () => {
   return (
     <>
@@ -23,9 +23,9 @@ const Mentalhealthchat = () => {
         {/* New row for the button */}
         <div className="row d-flex justify-content-center">
           <div className="col-md-6 text-center">
-            <button className="btn btn-lg btn-outline-danger">
-              Try Out Our Model
-            </button>
+            <Link to="/chat" className="btn btn-lg btn-outline-danger">
+                Try Out Our Model
+          </Link>
           </div>
         </div>
       </div>

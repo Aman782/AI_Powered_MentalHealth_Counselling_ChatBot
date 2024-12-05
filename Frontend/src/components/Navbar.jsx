@@ -1,26 +1,27 @@
 import React from "react";
 import './Navbar.css';
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
      <>
       <div className="navbar d-flex p-3 border">
         <ul>
-          <a className="fs-4 fontstyle  ">TherapyAI</a>
-          <a className="fs-5">Home</a>
-          <a className="fs-5">About</a>
-          <a className="fs-5">Services</a>
-          <a className="fs-5">Contact</a>
+          <Link to={"/"} className="fs-4 fontstyle">TherapyAI</Link>
+          <Link to={"/"} className="fs-5 contentFontstyle">Home</Link>
+          <a className="fs-5 contentFontstyle">About</a>
+          <a className="fs-5 contentFontstyle">Services</a>
+          <a className="fs-5 contentFontstyle">Contact</a>
         </ul>
         
         <div className="auth ms-auto">
-        <button className="btn btn-primary btn-lg fs-6 mx-2">
+        <Link to={"/signup"} className="btn btn-primary btn-lg fs-6 mx-2 fontstyle">
            Signup
-        </button>
+        </Link>
 
-        <button className="btn btn-outline-success btn-lg fs-6 mx-2">
+        <Link to={"/login"} className="btn btn-outline-success btn-lg fs-6 mx-2 fontstyle">
            Login
-        </button>
+        </Link>
          </div>
         
       </div>
