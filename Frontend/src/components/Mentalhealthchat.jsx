@@ -7,7 +7,7 @@ const Mentalhealthchat = () => {
         <div className="row d-flex align-items-center justify-content-center">
           <div className="col-md-6">
             <p className="fs-3 text-center">
-              Our Mission <br />
+              Our Mission <i className="fa-solid fa-rocket"></i><br />
               Empowering Minds, Transforming Lives
             </p>
             <p className="fs-6 p-3 text-center">
@@ -24,7 +24,7 @@ const Mentalhealthchat = () => {
         <div className="row d-flex justify-content-center">
           <div className="col-md-6 text-center">
             <Link to="/chat" className="btn btn-lg btn-outline-danger">
-                Try Out Our Model
+                Try Out Our Model <i className="fa-solid fa-arrow-trend-up"></i>
           </Link>
           </div>
         </div>

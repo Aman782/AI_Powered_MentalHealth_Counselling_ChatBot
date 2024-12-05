@@ -1,87 +1,85 @@
-import React, { useState } from 'react';
-import { Card, Form, Button, Alert } from 'react-bootstrap';
-import Navbar from "./Navbar"; 
-import Footer from "./Footer"; 
+import React, { useState } from "react";
+import axios from "axios";
+import config from "../config.js";
+import Navbar from "./Navbar.jsx";  
+import Footer from "./Footer.jsx";  
 
+
+const API_URL = config.API_URL;
 
 const Login = () => {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
-
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [formData, setFormData] = useState({ username: "", password: "" });
+  const [message, setMessage] = useState("");
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (formData.email === 'test@example.com' && formData.password === 'password') {
-      setSuccess('Login successful!');
-      setError('');
-    } else {
-      setError('Invalid email or password.');
-      setSuccess('');
+    try {
+      const response = await axios.post(`${API_URL}/users/login`, formData, {
+        withCredentials: true,
+      });
+      setMessage("User logged in successfully");
+      console.log("Access Token:", response.data.accessToken);
+    } catch (error) {
+      setMessage(error.response?.data?.message || "Something went wrong");
     }
   };
 
   return (
     <>
-    <Navbar />
-    <div className="container d-flex justify-content-center align-items-center p-5" style={{ minHeight: '60vh' }}>
-      <div className="row w-100">
-        <div className="col-md-8 col-lg-6 mx-auto">
-          <Card className="shadow-sm border-1 p-4 rounded">
-            <Card.Body>
-              <h3 className="text-center mb-4 text-primary">Login</h3>
-              {error && <Alert variant="danger">{error}</Alert>}
-              {success && <Alert variant="success">{success}</Alert>}
+      {/* Include Navbar */}
+      <Navbar />
 
-              <Form onSubmit={handleSubmit}>
-                <Form.Group controlId="email" className="mb-3">
-                  <Form.Label>Email address</Form.Label>
-                  <Form.Control
-                    type="email"
-                    placeholder="Enter email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    className="shadow-sm"
-                  />
-                </Form.Group>
-
-                <Form.Group controlId="password" className="mb-3">
-                  <Form.Label>Password</Form.Label>
-                  <Form.Control
-                    type="password"
-                    placeholder="Password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    required
-                    className="shadow-sm"
-                  />
-                </Form.Group>
-
-                <Button variant="primary" type="submit" className="w-100 py-2">
-                  Login
-                </Button>
-              </Form>
-            </Card.Body>
-          </Card>
+      {/* Container to center the content */}
+      <div className="container d-flex justify-content-center align-items-center p-5">
+        {/* Card for the login form */}
+        <div className="card shadow-sm p-4" style={{ width: "100%", maxWidth: "400px" }}>
+          <h2 className="text-center mb-4">Login</h2>
+          <form onSubmit={handleSubmit}>
+            <div className="mb-3">
+              <label htmlFor="username" className="form-label">
+                Username or Email
+              </label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+                className="form-control"
+                placeholder="Enter your username or email"
+                required
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="password" className="form-label">
+                Password
+              </label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                className="form-control"
+                placeholder="Enter your password"
+                required
+              />
+            </div>
+            <button type="submit" className="btn btn-primary w-100">
+              Login
+            </button>
+          </form>
+          {/* Message after form submission */}
+          {message && <div className="alert alert-info mt-3">{message}</div>}
         </div>
       </div>
-    </div>
-    <Footer />
+
+      {/* Include Footer */}
+      <Footer />
     </>
   );
 };
