@@ -6,6 +6,7 @@ const Navbar = () => {
      <>
       <div className="navbar d-flex p-3 border">
         <ul>
+          <a className="fs-4 fontstyle  ">TherapyAI</a>
           <a className="fs-5">Home</a>
           <a className="fs-5">About</a>
           <a className="fs-5">Services</a>
@@ -13,11 +14,11 @@ const Navbar = () => {
         </ul>
         
         <div className="auth ms-auto">
-        <button className="btn btn-primary fs-5 mx-2">
+        <button className="btn btn-primary btn-lg fs-6 mx-2">
            Signup
         </button>
 
-        <button className="btn btn-outline fs-5 mx-2">
+        <button className="btn btn-outline-success btn-lg fs-6 mx-2">
            Login
         </button>
          </div>
