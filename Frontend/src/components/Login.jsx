@@ -75,8 +75,6 @@ const Login = ({setLoggedIn}) => {
           </form>
         </div>
       </div>
-
-      <Footer />
     </>
   );
 };
