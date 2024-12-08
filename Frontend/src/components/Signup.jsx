@@ -1,61 +1,79 @@
-import React from "react";
-import Navbar from "./Navbar.jsx";  
-import Footer from "./Footer.jsx"; 
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
+const Signup = ({setLoggedIn}) => {
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
-const Signup = () => {
+  const handleOnSubmit = async (e) => {
+    e.preventDefault();
+    let data = { username, email, password };
+
+    try {
+      const res = await axios.post('http://localhost:8000/users/register', data);
+      alert('Registration Success');
+      setLoggedIn(true);
+      navigate('/');
+      console.log(res.data);
+    } catch (error) {
+      alert('Registration Failed!');
+      console.log(error);
+    }
+
+    setEmail('');
+    setUsername('');
+    setPassword('');
+  };
+
   return (
     <>
-    <Navbar />
-    <div className="container d-flex justify-content-center align-items-center p-5">
-      <form 
-        method="post" 
-        action="http://localhost:8000/users/register" 
-        className="card p-4 shadow-sm" 
-        style={{ maxWidth: "400px", width: "100%" }}
-      >
-        <h3 className="text-center mb-4">Signup</h3>
-        
-        <div className="mb-3">
-          <label htmlFor="username" className="form-label">Username</label>
-          <input 
-            type="text" 
-            id="username" 
-            placeholder="Enter username" 
-            name="username" 
-            className="form-control" 
-            required
-          />
-        </div>
-        
-        <div className="mb-3">
-          <label htmlFor="email" className="form-label">Email</label>
-          <input 
-            type="email" 
-            id="email" 
-            placeholder="Enter email" 
-            name="email" 
-            className="form-control" 
-            required
-          />
-        </div>
-        
-        <div className="mb-3">
-          <label htmlFor="password" className="form-label">Password</label>
-          <input 
-            type="password" 
-            id="password" 
-            placeholder="Enter password" 
-            name="password" 
-            className="form-control" 
-            required
-          />
-        </div>
-
-        <button type="submit" className="btn btn-primary w-100">Register</button>
-      </form>
+    <div className="container mt-3 d-flex justify-content-center p-5 fontstyle">
+      <div className="card shadow-sm p-4 col-md-5">
+        <h2 className="text-center mb-4 text-primary">Sign Up</h2>
+        <form onSubmit={handleOnSubmit}>
+          <div className="mb-3">
+            <label htmlFor="username" className="form-label">Username</label>
+            <input
+              type="text"
+              className="form-control"
+              id="username"
+              placeholder="Enter username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="email" className="form-label">Email</label>
+            <input
+              type="email"
+              className="form-control"
+              id="email"
+              placeholder="Enter email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="password" className="form-label">Password</label>
+            <input
+              type="password"
+              className="form-control"
+              id="password"
+              placeholder="Enter password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <button type="submit" className="btn btn-primary w-100">Register</button>
+        </form>
+      </div>
     </div>
-    <Footer />
     </>
   );
 };

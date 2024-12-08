@@ -14,9 +14,8 @@ export const registerUser = async (req, res) => {
       }
 
       // Check if email or username already exists
-      const userExists = await User.findOne({
-         $or: [{ username }, { email }]
-      });
+      const userExists = await User.findOne(email);
+      // $or: [{ username }, { email }]
 
       if (userExists) {
          return res.status(400).json({ message: "User already exists" });
@@ -73,7 +72,9 @@ export const loginUser = async (req, res)=>{
 
 
     const {username, email, password} = req.body;
-    console.log(username, email);
+    console.log("Email: ", email);
+    console.log("Username: ", username);
+    console.log("Password: ", password);
 
     if(!username && !email){
         return res.status(401).json("username or email required");
@@ -105,8 +106,8 @@ export const loginUser = async (req, res)=>{
 
     const options = {
       httpOnly: true,
-      secure: false, // Change to true in production
-      sameSite: 'Lax', // Change or remove for testing
+      secure: false, 
+      sameSite: 'Lax', 
   };
   
     
@@ -129,7 +130,7 @@ export const logoutUser = async (req, res)=>{
          req.user._id,
          {
              $unset: {
-                 refreshToken: 1 // this removes the field from document
+                 refreshToken: 1 
              }
          },
          {
@@ -139,8 +140,8 @@ export const logoutUser = async (req, res)=>{
    
       const options = {
          httpOnly: true,
-         secure: false, // Change to true in production
-         sameSite: 'Lax', // Change or remove for testing
+         secure: false, 
+         sameSite: 'Lax', 
      };
      
    

@@ -3,7 +3,7 @@ import './HowITWorks.css';
 
 const HowItWorks = () => {
   return (
-    <div className="container my-5 fontstyle p-3">
+    <div id="services" className="container my-5 fontstyle p-3 border-1">
       <h2 className="text-center fs-1">How It Works <i className="fa-solid fa-gear"></i></h2>
       <div className="row d-flex justify-content-center p-3">
         

@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Card, Button, Form } from "react-bootstrap";
-import Navbar from "./Navbar"; 
-import Footer from "./Footer";  
 
 const ChatWithAI = () => {
   const [userMessage, setUserMessage] = useState("");
@@ -27,8 +25,7 @@ const ChatWithAI = () => {
 
   return (
     <>
-      <Navbar />
-      <Container fluid className="p-4">
+      <Container fluid className="p-4 fontstyle">
         <Row className="justify-content-center">
           <Col md={8}>
             <Card>
@@ -38,7 +35,7 @@ const ChatWithAI = () => {
                   style={{
                     height: "300px",
                     overflowY: "scroll",
-                    border: "1px solid #ccc",
+                    border: "2px solid #ccc",
                     padding: "10px",
                     marginBottom: "10px",
                   }}
@@ -79,7 +76,6 @@ const ChatWithAI = () => {
           </Col>
         </Row>
       </Container>
-      <Footer />
     </>
   );
 };
