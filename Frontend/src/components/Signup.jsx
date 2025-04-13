@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -13,7 +13,7 @@ const Signup = ({setLoggedIn}) => {
     let data = { username, email, password };
 
     try {
-      const res = await axios.post('http://localhost:8000/users/register', data);
+      const res = await axios.post('http://localhost:8000/users/register', data, {withCredentials: true});
       alert('Registration Success');
       setLoggedIn(true);
       navigate('/');
@@ -31,7 +31,7 @@ const Signup = ({setLoggedIn}) => {
   return (
     <>
     <div className="container mt-3 d-flex justify-content-center p-5 fontstyle">
-      <div className="card shadow-sm p-4 col-md-5">
+      <div className="card shadow-sm p-4 col-md-5 border-3">
         <h2 className="text-center mb-4 text-primary">Sign Up</h2>
         <form onSubmit={handleOnSubmit}>
           <div className="mb-3">

@@ -8,7 +8,7 @@ import HowItWorks from './components/HowITWorks';
 import Navbar from './components/Navbar';
 import { useState } from 'react';
 import Footer from './components/Footer';
-import PageNotFound
+import PageNotFound from './components/PageNotFound';
 
 function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);

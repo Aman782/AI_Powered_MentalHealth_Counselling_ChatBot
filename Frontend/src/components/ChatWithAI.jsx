@@ -1,27 +1,113 @@
-import React, { useState } from "react";
+import {useState, useEffect, useRef } from "react";
 import { Container, Row, Col, Card, Button, Form } from "react-bootstrap";
+import axios from "axios";
+import "./ChatWithAI.css"; // Ensure your CSS has typing dot animations
+
+// Typing Dots Component
+const TypingDots = () => {
+  return (
+    <div className="typing-dots ms-2">
+      <span className="dot">•</span>
+      <span className="dot">•</span>
+      <span className="dot">•</span>
+    </div>
+  );
+};
 
 const ChatWithAI = () => {
   const [userMessage, setUserMessage] = useState("");
   const [chatHistory, setChatHistory] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [selectedVoice, setSelectedVoice] = useState(null);
+  const chatEndRef = useRef(null);
+
+  // Load and randomly assign a voice
+  useEffect(() => {
+    const loadVoices = () => {
+      let voices = window.speechSynthesis.getVoices();
+
+      if (voices.length === 0) {
+        window.speechSynthesis.onvoiceschanged = () => {
+          voices = window.speechSynthesis.getVoices();
+          pickRandomVoice(voices);
+        };
+      } else {
+        pickRandomVoice(voices);
+      }
+    };
+
+    const pickRandomVoice = (voices) => {
+      const englishVoices = voices.filter((voice) =>
+        voice.lang.toLowerCase().startsWith("en")
+      );
+
+      if (englishVoices.length > 0) {
+        const randomVoice = englishVoices[Math.floor(Math.random() * englishVoices.length)];
+        setSelectedVoice(randomVoice);
+      }
+    };
+
+    loadVoices();
+  }, []);
+
+  const speakText = (text) => {
+    if ("speechSynthesis" in window && selectedVoice) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.voice = selectedVoice;
+      utterance.rate = 1;
+      utterance.pitch = 1;
+      utterance.volume = 1;
+      utterance.lang = "en-US";
+
+      window.speechSynthesis.speak(utterance);
+    }
+  };
 
   const handleMessageChange = (event) => {
     setUserMessage(event.target.value);
   };
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (userMessage.trim() !== "") {
-      setChatHistory([...chatHistory, { user: userMessage }]);
+      const currentMessage = userMessage;
+      setChatHistory((prev) => [...prev, { user: currentMessage }]);
       setUserMessage("");
+      setLoading(true);
 
-      setTimeout(() => {
-        setChatHistory((prevHistory) => [
-          ...prevHistory,
-          { ai: "This is a response from the AI model." },
-        ]);
-      }, 1000);
+      try {
+        const response = await axios.post(
+          "http://localhost:8000/ai/chat/message",
+          {
+            userInput: currentMessage,
+          },
+          { withCredentials: true }
+        );
+
+        const aiReply = response.data.message || "AI did not return a valid response.";
+
+        setChatHistory((prevHistory) => [...prevHistory, { ai: aiReply }]);
+        speakText(aiReply);
+      } catch (error) {
+        console.error("Error communicating with backend:", error);
+        const errorMsg = "Something went wrong. Please try again later.";
+        setChatHistory((prevHistory) => [...prevHistory, { ai: errorMsg }]);
+        speakText(errorMsg);
+      } finally {
+        setLoading(false);
+      }
     }
   };
+
+  const handleClearChat = () => {
+    setChatHistory([]);
+    setUserMessage("");
+  };
+
+  useEffect(() => {
+    if (chatEndRef.current) {
+      chatEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [chatHistory]);
 
   return (
     <>
@@ -31,6 +117,7 @@ const ChatWithAI = () => {
             <Card>
               <Card.Body>
                 <h4 className="text-center mb-3">Chat with AI</h4>
+
                 <div
                   style={{
                     height: "300px",
@@ -38,39 +125,51 @@ const ChatWithAI = () => {
                     border: "2px solid #ccc",
                     padding: "10px",
                     marginBottom: "10px",
+                    backgroundColor: "#f9f9f9",
                   }}
                 >
                   {chatHistory.map((msg, index) => (
                     <div key={index} className="mb-2">
                       {msg.user && (
                         <div>
-                          <strong>You: </strong>
+                          <strong>You:</strong>
                           <p>{msg.user}</p>
                         </div>
                       )}
                       {msg.ai && (
                         <div>
-                          <strong>AI: </strong>
+                          <strong>AI:</strong>
                           <p>{msg.ai}</p>
                         </div>
                       )}
                     </div>
                   ))}
+
+                  {loading && (
+                    <div className="mb-2 d-flex align-items-center">
+                      <strong>AI:</strong>
+                      <TypingDots />
+                    </div>
+                  )}
+                  <div ref={chatEndRef} />
                 </div>
+
                 <Form.Control
                   type="text"
                   placeholder="Type a message"
                   value={userMessage}
                   onChange={handleMessageChange}
-                  onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
+                  onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
                 />
-                <Button
-                  variant="primary"
-                  className="mt-2"
-                  onClick={handleSendMessage}
-                >
-                  Send
-                </Button>
+
+                <div className="mt-2 d-flex justify-content-between">
+                  <Button variant="primary" onClick={handleSendMessage}>
+                    Send
+                  </Button>
+                  <Button variant="warning" onClick={handleClearChat}>
+                    Clear Chat
+                  </Button>
+                </div>
               </Card.Body>
             </Card>
           </Col>

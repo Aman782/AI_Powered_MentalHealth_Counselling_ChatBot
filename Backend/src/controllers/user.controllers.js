@@ -14,7 +14,7 @@ export const registerUser = async (req, res) => {
       }
 
       // Check if email or username already exists
-      const userExists = await User.findOne(email);
+      const userExists = await User.findOne({email});
       // $or: [{ username }, { email }]
 
       if (userExists) {
@@ -108,6 +108,7 @@ export const loginUser = async (req, res)=>{
       httpOnly: true,
       secure: false, 
       sameSite: 'Lax', 
+      maxAge: 1000 * 60 * 60 * 24 * 7 
   };
   
     
@@ -122,8 +123,10 @@ export const loginUser = async (req, res)=>{
     });    
 }
 
+
+
 export const logoutUser = async (req, res)=>{
-   // console.log(req);
+   console.log(req);
 
    try {  
       await User.findByIdAndUpdate(
@@ -142,6 +145,7 @@ export const logoutUser = async (req, res)=>{
          httpOnly: true,
          secure: false, 
          sameSite: 'Lax', 
+         maxAge: 1000 * 60 * 60 * 24 * 7 
      };
      
    
@@ -156,6 +160,11 @@ export const logoutUser = async (req, res)=>{
       return res.status(401).json(error.message || "Invalid Access Token!");
   }  
 } 
+
+
+
+
+
 
 export const refreshAccessTokenAfterExpiry = async (req, res)=>{
    const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken;
@@ -188,6 +197,7 @@ export const refreshAccessTokenAfterExpiry = async (req, res)=>{
          httpOnly: true,
          secure: false, 
          sameSite: 'Lax',
+         maxAge: 1000 * 60 * 60 * 24 * 7 
       }
 
       const {accessToken, newRefreshToken} = generateAccessTokenAndRefreshToken(user._id);

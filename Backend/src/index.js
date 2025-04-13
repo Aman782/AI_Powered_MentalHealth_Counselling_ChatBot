@@ -3,13 +3,14 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import {dbConnection} from './db/db_connection.js';
 import {userRoute} from './routes/user.routes.js';
+import aiRoutes from './routes/ai.routes.js';
 import cors from 'cors';
 
-dotenv.config();
+dotenv.config({ path: '../.env' }); 
 
 const app = express();
 app.use(cors({
-    origin: 'http://localhost:5173', // Replace with your frontend's URL
+    origin: 'http://localhost:5173', 
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
 }));
@@ -30,4 +31,5 @@ app.get('/', (req, res)=>{
 });
 
 app.use('/users', userRoute);
+app.use('/ai/chat', aiRoutes);
 

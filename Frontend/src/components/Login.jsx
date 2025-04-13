@@ -10,7 +10,7 @@ const Login = ({setLoggedIn}) => {
   
   const navigate = useNavigate();
 
-  const handleOnSubmit = (e)=>{
+  const handleOnSubmit = async (e)=>{
     e.preventDefault();
     
     let data = {
@@ -19,7 +19,7 @@ const Login = ({setLoggedIn}) => {
     }
 
     try{
-      const res = axios.post("http://localhost:8000/users/login", data);
+      const res = await axios.post("http://localhost:8000/users/login", data, {withCredentials: true});
       alert("User LoggedIn Successfully!");
       setLoggedIn(true);
       navigate("/");
@@ -37,7 +37,7 @@ const Login = ({setLoggedIn}) => {
   return (
     <>
       <div className="container-fluid mt-3 d-flex justify-content-center p-5 fontstyle">
-        <div className="card shadow-sm col-md-5 p-4">
+        <div className="card shadow-sm col-md-5 p-4 border-3">
           <h2 className="text-center mb-4 text-primary">Login</h2>
           <form onSubmit={handleOnSubmit}>
             <div className="mb-3">

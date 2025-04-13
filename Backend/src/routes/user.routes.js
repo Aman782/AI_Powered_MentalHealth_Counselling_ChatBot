@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.route('/register').post(registerUser);
 router.route('/login').post(loginUser);
-router.route('/logout').post(logoutUser);
+router.route('/logout').get(validateJWT_Token, logoutUser);
 router.route('/refreshToken').post(refreshAccessTokenAfterExpiry);
 router.route('/change-password').post(changePassword);
 router.route('/change-username').post(changeUsername);
