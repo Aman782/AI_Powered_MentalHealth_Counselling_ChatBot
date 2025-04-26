@@ -77,3 +77,10 @@
     max-width: 70%;
   }
 }
+
+.jitsi-container {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 1rem;
+}
+

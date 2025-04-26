@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Container, Row, Col, Card, Button, Form } from "react-bootstrap";
 import axios from "axios";
+import { JitsiMeeting } from "@jitsi/react-sdk";
 import "./ChatWithAI.css"; // Ensure your CSS has typing dot animations
 
 const TypingDots = () => {
@@ -18,6 +19,7 @@ const ChatWithAI = () => {
   const [chatHistory, setChatHistory] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedVoice, setSelectedVoice] = useState(null);
+  const [showJitsi, setShowJitsi] = useState(false); // To toggle Jitsi video call
   const chatEndRef = useRef(null);
 
   useEffect(() => {
@@ -99,6 +101,10 @@ const ChatWithAI = () => {
     }
   }, [chatHistory]);
 
+  const generateRandomRoomName = () => {
+    return `room-${Math.random().toString(36).substring(2, 15)}`;
+  };
+
   return (
     <Container fluid className="p-4 fontstyle">
       <Row className="justify-content-center">
@@ -146,6 +152,50 @@ const ChatWithAI = () => {
                 Clear Chat
               </Button>
             </div>
+
+            {/* Add a button to start the video call */}
+            <Button
+              variant="success"
+              className="mt-3 px-4 rounded-pill"
+              onClick={() => setShowJitsi(true)}
+            >
+              Start Video Call
+            </Button>
+
+            {/* Jitsi Video Call */}
+            {showJitsi && (
+              <div className="jitsi-container mt-4">
+                <Card className="shadow-sm border-0">
+                  <Card.Body>
+                    <div className="d-flex justify-content-between align-items-center mb-3">
+                      <h5 className="fw-bold mb-0">🔴 Live Video Call</h5>
+                      <Button
+                        variant="outline-danger"
+                        size="sm"
+                        onClick={() => setShowJitsi(false)}
+                      >
+                        Close Video Call
+                      </Button>
+                    </div>
+
+                    <JitsiMeeting
+                      roomName={generateRandomRoomName()}
+                      getIFrameRef={(iframeRef) => {
+                        iframeRef.style.height = "500px";
+                        iframeRef.style.width = "100%";
+                        iframeRef.allow =
+                          "camera; microphone; fullscreen; display-capture";
+                      }}
+                      configOverwrite={{
+                        startWithAudioMuted: false,
+                        startWithVideoMuted: false,
+                      }}
+                      userInfo={{ displayName: "User" }}
+                    />
+                  </Card.Body>
+                </Card>
+              </div>
+            )}
           </div>
         </Col>
       </Row>
