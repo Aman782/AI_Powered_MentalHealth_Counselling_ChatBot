@@ -56,4 +56,70 @@ An AI-powered chatbot that provides mental health support through empathetic, hu
 ---
 
 ## 📁 Folder Structure
+AI_Powered_MentalHealth_Counselling_ChatBot/
+├── frontend/
+│   └── src/
+│       └── components/
+├── backend/
+│   └── src/
+│       ├── controllers/
+│       ├── middlewares/
+│       ├── models/
+│       ├── db/
+│       ├── routes/
+│       ├── utils/
+│       └── index.js
+├── README.md
+└── .env
+
+
+---
+
+## ⚙️ Installation & Setup
+
+To run this project locally:
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/Aman_782/AI_Powered_MentalHealth_Counselling_ChatBot.git
+cd AI_Powered_MentalHealth_Counselling_ChatBot
+```
+
+### 2. Move to Backend
+
+  ```
+  cd backend
+  npm install
+  ```
+
+### 3. Create a .env file
+ ```
+   MONGO_URI=your-mongodb-connection-uri
+   JWT_SECRET=your-jwt-secret
+   JITSI_DOMAIN=meet.jit.si
+ ```
+### 4. Start index.js
+  ```
+   cd src
+   Nodemon index.js
+  ```
+
+### 5. Move to Frontend
+  ```
+  cd Frontend
+  npm i
+  npm run dev
+ ```
+
+---
+
+### 👤 **Author**
+
+[![GitHub](https://img.shields.io/badge/GitHub-AmanPandey-181717?style=for-the-badge&logo=github)](https://github.com/Aman_782)  
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-amanpandey-blue?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/aman-pandey-a61b4521a/)  
+
+
+---
+
 
