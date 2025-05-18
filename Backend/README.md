@@ -56,6 +56,8 @@ An AI-powered chatbot that provides mental health support through empathetic, hu
 ---
 
 ## 📁 Folder Structure
+
+```
 AI_Powered_MentalHealth_Counselling_ChatBot/
 ├── frontend/
 │   └── src/
@@ -72,7 +74,7 @@ AI_Powered_MentalHealth_Counselling_ChatBot/
 ├── README.md
 └── .env
 
-
+```
 ---
 
 ## ⚙️ Installation & Setup
