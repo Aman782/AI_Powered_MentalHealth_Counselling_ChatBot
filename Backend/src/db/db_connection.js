@@ -2,7 +2,10 @@ import mongoose from 'mongoose';
 
 export const dbConnection = async function main(){
     try{
-        await mongoose.connect("mongodb+srv://amanpandey45692:HdniOiYc0txo9Dep@cluster0.f2deq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0");
+        await mongoose.connect("mongodb+srv://amanpandey45692:HdniOiYc0txo9Dep@cluster0.f2deq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
         console.log("DB Connected SuccessFully!");
     }catch(e){
        console.log("Mongo ERR: ", e);

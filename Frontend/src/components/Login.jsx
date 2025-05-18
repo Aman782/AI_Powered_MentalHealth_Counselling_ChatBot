@@ -1,38 +1,46 @@
 import React, { useState } from "react";
-import Navbar from "./Navbar";
-import Footer from "./Footer";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-const Login = ({setLoggedIn}) => {
+const Login = ({ setLoggedIn }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
-  const handleOnSubmit = async (e)=>{
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
-    
-    let data = {
-      email,
-      password
-    }
+    setLoading(true);
 
-    try{
-      const res = await axios.post("http://localhost:8000/users/login", data, {withCredentials: true});
-      alert("User LoggedIn Successfully!");
+    const data = { email, password };
+    console.log(data);
+
+    try {
+      const res = await axios.post(
+        "http://localhost:8000/users/login",
+        data,
+        { withCredentials: true }
+      );
+      alert("Login successful!");
       setLoggedIn(true);
-      navigate("/");
-      console.log(res.data);
-    }catch(error){
-      alert("Login credentials are Incorrect!, try again");
-      navigate("/login");
-      console.log(error);
-    }
+      
+      if(res.data.LoggedInUser.role == "expert"){
+        navigate('/expert-dashboard');
+      }else{
+        navigate('/');
+      }
 
-    setEmail('');
-    setPassword('');
-  }
+      console.log(res.data);
+    } catch (error) {
+      alert("Incorrect email or password. Please try again.");
+      console.error(error);
+    } finally {
+      setEmail("");
+      setPassword("");
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -41,36 +49,43 @@ const Login = ({setLoggedIn}) => {
           <h2 className="text-center mb-4 text-primary">Login</h2>
           <form onSubmit={handleOnSubmit}>
             <div className="mb-3">
-              <label htmlFor="username" className="form-label">
+              <label htmlFor="email" className="form-label">
                 Email
               </label>
               <input
-                id={"email"}
+                id="email"
                 className="form-control"
-                type="text"
-                placeholder="enter email"
+                type="email"
+                placeholder="Enter email"
                 value={email}
-                onChange={(e)=> setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
                 required
-              ></input>
+                disabled={loading}
+              />
             </div>
 
             <div className="mb-3">
               <label htmlFor="password" className="form-label">
-                password
+                Password
               </label>
               <input
-                id={"password"}
+                id="password"
                 className="form-control"
                 type="password"
-                placeholder="enter password"
+                placeholder="Enter password"
                 value={password}
-                onChange={(e)=> setPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
                 required
-              ></input>
+                disabled={loading}
+              />
             </div>
-            <button className="btn btn-primary w-100" type="submit">
-              Login
+
+            <button
+              className="btn btn-primary w-100"
+              type="submit"
+              disabled={loading}
+            >
+              {loading ? "Logging in..." : "Login"}
             </button>
           </form>
         </div>
