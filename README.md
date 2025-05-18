@@ -6,7 +6,7 @@ An AI-powered chatbot that provides mental health support through empathetic, hu
 
 ## 🚀 Live Demo
 
-[Try the ChatBot Live](https://your-live-demo-link.com)
+[ChatBot Demonstration Video link](https://your-live-demo-link.com)
 
 
 
